@@ -2,9 +2,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdlib.h>  
+#include <stdlib.h>
 #include <errno.h>
-#include <unistd.h> 
+#include <unistd.h>
 #include <signal.h>
 #include <string.h>
 #include <fcntl.h>    					// O_RDWR
@@ -36,22 +36,22 @@ int pcanTx(int id, int data){
 	status = CAN_Status(h);
 
 	// Set up message
-	Txmsg.ID = id; 	
-	Txmsg.MSGTYPE = MSGTYPE_STANDARD; 
-	Txmsg.LEN = 1; 
-	Txmsg.DATA[0] = data; 
+	Txmsg.ID = id;
+	Txmsg.MSGTYPE = MSGTYPE_STANDARD;
+	Txmsg.LEN = 1;
+	Txmsg.DATA[0] = data;
 
-	sleep(1);  
+	sleep(1);
 	status = CAN_Write(h, &Txmsg);
 
-	// Close CAN 2.0 channel and exit	
+	// Close CAN 2.0 channel and exit
 	CAN_Close(h);
 }
 
 int pcanRx(int num_msgs){
 	int i = 0;
 
-	// Open a CAN channel 
+	// Open a CAN channel
 	h2 = LINUX_CAN_Open("/dev/pcanusb32", O_RDWR);
 
 	// Initialize an opened CAN 2.0 channel with a 125kbps bitrate, accepting standard frames
@@ -65,7 +65,7 @@ int pcanRx(int num_msgs){
 
 	// receive CAN message  - CODE adapted from PCAN BASIC C++ examples pcanread.cpp
 	printf("\nReady to receive message(s) over CAN bus\n");
-	
+
 	// Read 'num' messages on the CAN bus
 	while(i < num_msgs) {
 		while((status = CAN_Read(h2, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
@@ -75,18 +75,18 @@ int pcanRx(int num_msgs){
 			printf("Error 0x%x\n", (int)status);
 			//break;
 		}
-										
-		if(Rxmsg.ID != 0x01 && Rxmsg.LEN != 0x04) {		// Ignore status message on bus	
+
+		if(Rxmsg.LEN != 0x04) {		// Ignore status message on bus	
 			printf("  - R ID:%4x LEN:%1x DATA:%02x \n",	// Display the CAN message
-				(int)Rxmsg.ID, 
+				(int)Rxmsg.ID,
 				(int)Rxmsg.LEN,
 				(int)Rxmsg.DATA[0]);
 		i++;
 		}
 	}
-	
 
-	// Close CAN 2.0 channel and exit	
+
+	// Close CAN 2.0 channel and exit
 	CAN_Close(h2);
 	//printf("\nEnd Rx\n");
 	return ((int)Rxmsg.DATA[0]);						// Return the last value received
