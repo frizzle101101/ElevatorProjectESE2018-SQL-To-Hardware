@@ -98,19 +98,19 @@ void PCanObj::pcanExecuteRecievedCommand(){
 			(int)Rxmsg.DATA[0]);
 		if(Rxmsg.ID == ID_CC_TO_SC)
 		{
-			pcanTx(ID_SC_TO_EC, HexFromFloor(floorNumber));
+			this.pcanTx(ID_SC_TO_EC, HexFromFloor(floorNumber));
 		}
 		else if(Rxmsg.ID == ID_F1_TO_SC)
 		{
-			pcanTx(ID_SC_TO_EC, GO_TO_FLOOR1);
+			this.pcanTx(ID_SC_TO_EC, GO_TO_FLOOR1);
 		}
 		else if(Rxmsg.ID == ID_F2_TO_SC)
 		{
-			pcanTx(ID_SC_TO_EC, GO_TO_FLOOR2);
+			this.pcanTx(ID_SC_TO_EC, GO_TO_FLOOR2);
 		}
 		else if(Rxmsg.ID == ID_F3_TO_SC)
 		{
-			pcanTx(ID_SC_TO_EC, GO_TO_FLOOR3);
+			this.pcanTx(ID_SC_TO_EC, GO_TO_FLOOR3);
 		}
 	}
 
