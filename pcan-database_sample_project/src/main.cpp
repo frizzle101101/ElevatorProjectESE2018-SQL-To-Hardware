@@ -28,7 +28,7 @@ int main() {
 			case 1:
 				ID = chooseID();		// user to select ID depending on intended recipient
 				data = chooseMsg();		// user to select message data
-				pcanTx(ID, data);		// transmit ID and data
+				pCan.pcanTx(ID, data);		// transmit ID and data
 				db_setFloorNum(FloorFromHex(data)); 		// change floor number in database ** NEW **
 				break;
 
@@ -36,7 +36,7 @@ int main() {
 				printf("\nHow many messages to receive? ");
 				scanf("%d", &numRx);
 				pCan.pcanRxN(numRx);
-				sleep()
+				sleep(1);
 				break;
 
 			case 3:
@@ -64,7 +64,7 @@ int main() {
 						}
 						prev_floorNumber = floorNumber;
 						//checcking for can rx
-						pCan.pcanExecuteRecievedCommands()
+						pCan.pcanExecuteRecievedCommands();
 						sleep(1);															// poll database once every second to check for change in floor number
 					}
 			case 5:
