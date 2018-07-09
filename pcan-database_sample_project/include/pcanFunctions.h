@@ -1,6 +1,19 @@
 #ifndef PCAN_FUNCTIONS
 #define PCAN_FUNCTIONS
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <unistd.h>
+#include <signal.h>
+#include <string.h>
+#include <fcntl.h>    					// O_RDWR
+#include <unistd.h>
+#include <ctype.h>
+#include <libpcan.h>   					// PCAN library
+
+
 // Defines
 // ***********************************************************************************************************
 #define PCAN_RECEIVE_QUEUE_EMPTY        0x00020U  	// Receive queue is empty
@@ -23,10 +36,12 @@
 class PCanObj
 {
 public:
+  TPCANMsg Rxmsg;
+
 	int pcanTx(int id, int data);
 	int pcanRxN(int num_msgs);//old test functions
-	void pcanRx();
-  TPCANMsg Rxmsg;
+	void pcanExecuteRecievedCommand();
+
 
 private:
 	HANDLE h;

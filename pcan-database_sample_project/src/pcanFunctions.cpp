@@ -1,16 +1,5 @@
 #include "../include/pcanFunctions.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <unistd.h>
-#include <signal.h>
-#include <string.h>
-#include <fcntl.h>    					// O_RDWR
-#include <unistd.h>
-#include <ctype.h>
-#include <libpcan.h>   					// PCAN library
 
 class PCanObj
 {
