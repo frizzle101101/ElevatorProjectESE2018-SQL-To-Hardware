@@ -48,7 +48,7 @@ private:
 	HANDLE h2;
 	TPCANMsg Txmsg;
 	DWORD status;
-}
+};
 
 
 #endif
