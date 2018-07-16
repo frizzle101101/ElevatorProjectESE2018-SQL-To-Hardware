@@ -76,12 +76,6 @@ void PCanObj::pcanExecuteRecievedCommand(){
 	// Clear the channel - new - Must clear the channel before Tx/Rx
 	status = CAN_Status(h2);
 
-	// Clear screen to show received messages
-	system("@cls||clear");
-
-	// receive CAN message  - CODE adapted from PCAN BASIC C++ examples pcanread.cpp
-	printf("\nReady to receive message(s) over CAN bus\n");
-
 	// Read 'num' messages on the CAN bus
 	while((status = CAN_Read(h2, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
 		sleep(1);
