@@ -20,7 +20,7 @@ int db_getFloorNum() {
 
 	// Create a connection
 	driver = get_driver_instance();
-	con = driver->connect("tcp://127.0.0.1:3306", "root", "");	
+	con = driver->connect("tcp://127.0.0.1:3306", "pi", "ese");	
 	con->setSchema("elevator");
 
 	// Query database
