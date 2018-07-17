@@ -88,13 +88,13 @@ void PCanObj::pcanExecuteRecievedCommand(){
 			(int)Rxmsg.DATA[0]);
 		if(Rxmsg.ID == ID_CC_TO_SC)
 		{
-			if(Rxmsg.DATA[0] == 0x05){
+			if(Rxmsg.DATA[0] == 0x01){
 				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR1);
 			}
-			else if (Rxmsg.DATA[0] == 0x06) {
+			else if (Rxmsg.DATA[0] == 0x02) {
 				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR2);
 			}
-			else if (Rxmsg.DATA[0] == 0x07) {
+			else if (Rxmsg.DATA[0] == 0x03) {
 				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR3);
 			}
 		}
