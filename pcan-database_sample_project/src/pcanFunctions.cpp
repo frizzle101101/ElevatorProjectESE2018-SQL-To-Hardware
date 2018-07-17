@@ -1,6 +1,8 @@
 #include "../include/pcanFunctions.h"
 
-int PCanObj::pcanTx(int id, int data){
+
+void PCanObj::pcanInit()
+{
 	h = LINUX_CAN_Open("/dev/pcanusb32", O_RDWR);		// Open PCAN channel
 
 	// Initialize an opened CAN 2.0 channel with a 125kbps bitrate, accepting standard frames
@@ -8,7 +10,13 @@ int PCanObj::pcanTx(int id, int data){
 
 	// Clear the channel - new - Must clear the channel before Tx/Rx
 	status = CAN_Status(h);
-
+}
+void PCanObj::pcanClose()
+{
+	// Close CAN 2.0 channel and exit
+	CAN_Close(h);
+}
+int PCanObj::pcanTx(int id, int data){
 	// Set up message
 	Txmsg.ID = id;
 	Txmsg.MSGTYPE = MSGTYPE_STANDARD;
@@ -17,9 +25,6 @@ int PCanObj::pcanTx(int id, int data){
 
 	sleep(1);
 	status = CAN_Write(h, &Txmsg);
-
-	// Close CAN 2.0 channel and exit
-	CAN_Close(h);
 }
 
 int PCanObj::pcanRxN(int num_msgs){
@@ -67,15 +72,6 @@ int PCanObj::pcanRxN(int num_msgs){
 }
 
 void PCanObj::pcanExecuteRecievedCommand(){
-	// Open a CAN channel
-	h2 = LINUX_CAN_Open("/dev/pcanusb32", O_RDWR);
-
-	// Initialize an opened CAN 2.0 channel with a 125kbps bitrate, accepting standard frames
-	status = CAN_Init(h2, CAN_BAUD_125K, CAN_INIT_TYPE_ST);
-
-	// Clear the channel - new - Must clear the channel before Tx/Rx
-	status = CAN_Status(h2);
-
 	// Read 'num' messages on the CAN bus
 	while((status = CAN_Read(h2, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
 		sleep(1);
@@ -92,6 +88,15 @@ void PCanObj::pcanExecuteRecievedCommand(){
 			(int)Rxmsg.DATA[0]);
 		if(Rxmsg.ID == ID_CC_TO_SC)
 		{
+			if(Rxmsg.DATA[0] == 0x05){
+				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR1);
+			}
+			else if (Rxmsg.DATA[0] == 0x06) {
+				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR2);
+			}
+			else if (Rxmsg.DATA[0] == 0x07) {
+				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR3);
+			}
 		}
 		else if(Rxmsg.ID == ID_F1_TO_SC)
 		{
@@ -106,8 +111,4 @@ void PCanObj::pcanExecuteRecievedCommand(){
 			this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR3);
 		}
 	}
-
-
-	// Close CAN 2.0 channel and exit
-	CAN_Close(h2);
 }

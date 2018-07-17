@@ -56,6 +56,7 @@ int main() {
 				break;
 			case 4:
 			printf("\nNow listening to commands from the website, and reciving from pcan as SC - press ctrl-z to cancel\n");
+					pCan.pcanInit();
 					while(1){
 						//polling database
 						floorNumber = db_getFloorNum();
@@ -67,6 +68,7 @@ int main() {
 						pCan.pcanExecuteRecievedCommand();
 						sleep(1);															// poll database once every second to check for change in floor number
 					}
+					pCan.pcanClose();
 			case 5:
 				return(0);
 
