@@ -66,7 +66,6 @@ int main() {
 						prev_floorNumber = floorNumber;
 						//checcking for can rx
 						pCan.pcanExecuteRecievedCommand();
-						sleep(1);															// poll database once every second to check for change in floor number
 					}
 					pCan.pcanClose();
 			case 5:
