@@ -74,7 +74,7 @@ int PCanObj::pcanRxN(int num_msgs){
 void PCanObj::pcanExecuteRecievedCommand(){
 	// Read 'num' messages on the CAN bus
 	while((status = CAN_Read(h, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
-		mssleep(100);
+		usleep(100000);
 	}
 	if(status != PCAN_NO_ERROR) {						// If there is an error, display the code
 		printf("Error 0x%x\n", (int)status);
