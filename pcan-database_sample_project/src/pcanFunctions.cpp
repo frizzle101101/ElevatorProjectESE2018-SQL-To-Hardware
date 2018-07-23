@@ -1,6 +1,4 @@
 #include "../include/pcanFunctions.h"
-#include "../include/databaseFunctions.h"
-
 
 void PCanObj::pcanInit()
 {

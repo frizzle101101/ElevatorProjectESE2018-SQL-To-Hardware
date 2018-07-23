@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <libpcan.h>   					// PCAN library
+#include "databaseFunctions.h"
 
 
 // Defines
