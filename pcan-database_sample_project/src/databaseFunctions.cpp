@@ -34,11 +34,11 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 	// *****************************
 	pstmt = con->prepareStatement("INSERT INTO elv_req_log(nodeID,date,time,status,currentFloor,requestedFloor) VALUES (?,?,?,?,?,?)");
 	pstmt->setInt(1, nodeID);
-	pstmt->setString(1, currentDate);
-	pstmt->setString(1, currentTime);
-	pstmt->setInt(1, status);
-	pstmt->setInt(1, currentFloor);
-	pstmt->setInt(1, requestedFloor);
+	pstmt->setString(2, currentDate);
+	pstmt->setString(3, currentTime);
+	pstmt->setInt(4, status);
+	pstmt->setInt(5, currentFloor);
+	pstmt->setInt(6, requestedFloor);
 	pstmt->executeUpdate();
 
 	stmt = con->createStatement();
