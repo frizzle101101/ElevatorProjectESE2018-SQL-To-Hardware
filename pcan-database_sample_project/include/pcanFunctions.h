@@ -37,7 +37,7 @@
 class PCanObj
 {
 public:
-
+  TPCANMsg Rxmsg;
   void pcanInit();
   void pcanClose();
 	int pcanTx(int id, int data);
@@ -48,7 +48,7 @@ public:
 private:
 	HANDLE h;
 	HANDLE h2;
-  TPCANMsg Rxmsg;
+
 	TPCANMsg Txmsg;
 	DWORD status;
   int currentFloor = 1;
