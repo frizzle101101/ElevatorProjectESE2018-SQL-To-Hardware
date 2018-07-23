@@ -33,10 +33,11 @@ int main() {
 			printf("\nNow listening to commands from the website, and reciving from pcan as SC - press ctrl-z to cancel\n");
 					pCan.pcanInit();
 					dbObj.initDBConnection();
+					startTime = time(NULL);
 					while(1){
 						currentTime = time(NULL);
 
-						if(currentTime - startTime == 10)
+						if(currentTime - startTime >= 10)
 						{
 							moving = 0;
 						}
