@@ -37,7 +37,10 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 
 	stmt = con->createStatement();
 	res = stmt->executeQuery("SELECT * FROM elv_req_log ORDER BY reqId DESC LIMIT 1");	// message query
-	int requestID = res->getInt("reqId");
+	int requestID;
+	while(res->next()){
+		requestID = res->getInt("reqId");
+	}
 
 	pstmt = con->prepareStatement("INSERT INTO elv_req_que(reqId) VALUES (?)");
 	pstmt->setInt(1, requestID);
@@ -57,12 +60,18 @@ int DBObj::getQuedReqFloor() {
 	// *****************************
 	stmt = con->createStatement();
 	res = stmt->executeQuery("SELECT * FROM elv_req_que ORDER BY reqId ASC LIMIT 1");	// message query
-	int requestID = res->getInt("reqId");
+	int requestID;
+	while(res->next()){
+		requestID = res->getInt("reqId");
+	}
 
 	pstmt = con->prepareStatement("SELECT currentFloor FROM elv_req_log WHERE reqId = ?");	// message query
 	pstmt->setInt(1, requestID);
-	pstmt->executeQuery();
-	int floorNum = res->getInt("currentFloor");
+	res = pstmt->executeQuery();
+	int floorNum;
+	while(res->next()){
+		floorNum = res->getInt("currentFloor");
+	}
 
 	pstmt = con->prepareStatement("DELETE FROM elv_req_que WHERE reqId = ?");
 	pstmt->setInt(1, requestID);
