@@ -42,7 +42,7 @@ int main() {
 						}
 
 						//polling database
-						if(moiving == 0)
+						if(moving == 0)
 						{
 							//deque if not moving still
 							floorNumber = dbObj.getQuedReqFloor();
