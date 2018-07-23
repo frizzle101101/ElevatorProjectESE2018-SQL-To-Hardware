@@ -49,6 +49,10 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 	delete stmt;
 }
 int DBObj::getQuedReqFloor() {
+	sql::Statement *stmt;				// Crealte a pointer to a Statement object to hold statements
+	sql::ResultSet *res;				// Create a pointer to a ResultSet object to hold results
+	sql::PreparedStatement *pstmt; 		// Create a pointer to a prepared statement
+
 	// Query database
 	// *****************************
 	stmt = con->createStatement();
@@ -63,6 +67,11 @@ int DBObj::getQuedReqFloor() {
 	pstmt = con->prepareStatement("DELETE FROM elv_req_que WHERE reqId = ?");
 	pstmt->setInt(1, requestID);
 	pstmt->executeUpdate();
+
+	// Clean up pointers
+	delete res;
+	delete pstmt;
+	delete stmt;
 
 	return floorNum;
 }
