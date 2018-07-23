@@ -20,14 +20,14 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 	res = stmt->executeQuery("SELECT CURRENT_DATE()");	// message query
 	string currentDate;
 	while(res->next()){
-		currentDate = res->getString("");
+		currentDate = res->getString("CURRENT_DATE()");
 	}
 
 	stmt = con->createStatement();
 	res = stmt->executeQuery("SELECT CURRENT_TIME()");	// message query
 	string currentTime ;
 	while(res->next()){
-		currentTime = res->getString("");
+		currentTime = res->getString("CURRENT_TIME()");
 	}
 
 	// Update database
