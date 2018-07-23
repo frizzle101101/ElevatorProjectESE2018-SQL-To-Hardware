@@ -22,7 +22,9 @@ int main() {
 	int floorNumber = 1, prev_floorNumber = 1;
 	PCanObj pCan;
 	DBObj dbObj;
-
+	time_t startTime = 0;
+	time_t currentTime = 0;
+	int moving = 0;
 	while(1) {
 		system("@cls||clear");
 		choice = menu();
@@ -31,9 +33,6 @@ int main() {
 			printf("\nNow listening to commands from the website, and reciving from pcan as SC - press ctrl-z to cancel\n");
 					pCan.pcanInit();
 					dbObj.initDBConnection();
-					time_t startTime = 0;
-					time_t currentTime = 0;
-					int moving = 0;
 					while(1){
 						currentTime = time(NULL);
 
