@@ -71,40 +71,39 @@ int PCanObj::pcanRxN(int num_msgs){
 }
 
 void PCanObj::pcanLogRecievedRequest(DBObj& dbObj){
+	while((status = CAN_Read(h2, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
+		usleep(1);
+	}
+	if(status != PCAN_NO_ERROR) {						// If there is an error, display the code
+		printf("Error 0x%x\n", (int)status);
+		//break;
+	}
 
-	if((status = CAN_Read(h, &Rxmsg)) != PCAN_RECEIVE_QUEUE_EMPTY)
+	if(Rxmsg.ID == ID_EC_TO_ALL)
 	{
-		if(status != PCAN_NO_ERROR) {						// If there is an error, display the code
-			printf("Error 0x%x\n", (int)status);
-			//break;
-		}
-
-		if(Rxmsg.ID == ID_EC_TO_ALL)
+		currentFloor = (int)Rxmsg.DATA[0] - 4;
+	}
+	else if(Rxmsg.ID != 0x01 && Rxmsg.LEN != 0x04) // Ignore status message on bus
+	{
+		printf("  - R ID:%4x LEN:%1x DATA:%02x \n",	// Display the CAN message
+			(int)Rxmsg.ID,
+			(int)Rxmsg.LEN,
+			(int)Rxmsg.DATA[0]);
+		if(Rxmsg.ID == ID_CC_TO_SC)
 		{
-			currentFloor = (int)Rxmsg.DATA[0] - 4;
+			dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, (int)Rxmsg.DATA[0]);
 		}
-		else if(Rxmsg.ID != 0x01 && Rxmsg.LEN != 0x04) // Ignore status message on bus
+		else if(Rxmsg.ID == ID_F1_TO_SC)
 		{
-			printf("  - R ID:%4x LEN:%1x DATA:%02x \n",	// Display the CAN message
-				(int)Rxmsg.ID,
-				(int)Rxmsg.LEN,
-				(int)Rxmsg.DATA[0]);
-			if(Rxmsg.ID == ID_CC_TO_SC)
-			{
-				dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, (int)Rxmsg.DATA[0]);
-			}
-			else if(Rxmsg.ID == ID_F1_TO_SC)
-			{
-				dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 1);
-			}
-			else if(Rxmsg.ID == ID_F2_TO_SC)
-			{
-				dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 2);
-			}
-			else if(Rxmsg.ID == ID_F3_TO_SC)
-			{
-				dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 3);
-			}
+			dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 1);
+		}
+		else if(Rxmsg.ID == ID_F2_TO_SC)
+		{
+			dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 2);
+		}
+		else if(Rxmsg.ID == ID_F3_TO_SC)
+		{
+			dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 3);
 		}
 	}
 }
