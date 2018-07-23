@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ int main() {
 	int numRx;
 	int floorNumber = 1, prev_floorNumber = 1;
 	PCanObj pCan;
+	DBObj dbObj;
 
 	while(1) {
 		system("@cls||clear");
@@ -57,17 +59,41 @@ int main() {
 			case 4:
 			printf("\nNow listening to commands from the website, and reciving from pcan as SC - press ctrl-z to cancel\n");
 					pCan.pcanInit();
+					dbObj.initDBConnection();
+					time_t startTime = 0;
+					time_t currentTime = 0;
+					int moving = 0;
 					while(1){
+						currentTime = time(NULL);
+
+						if(currentTime - startTime == 10)
+						{
+							moving = 0;
+						}
+
 						//polling database
-						floorNumber = db_getFloorNum();
-						if (prev_floorNumber != floorNumber) {								// If floor number changes in database
-							pCan.pcanTx(ID_SC_TO_EC, HexFromFloor(floorNumber));					// change floor number in elevator - send command over CAN
+						if(moiving == 0)
+						{
+							//deque if not moving still
+							floorNumber = dbObj.getQuedReqFloor();
+						}
+						// If floor number changes in database
+						if (prev_floorNumber != floorNumber) {
+							//send the comand to ec
+							pCan.pcanTx(ID_SC_TO_EC, HexFromFloor(floorNumber));
+							prev_floorNumber = floorNumber;
+							startTime = time(NULL);
+							moving = 1;
 						}
 						prev_floorNumber = floorNumber;
+
+
 						//checcking for can rx
-						pCan.pcanExecuteRecievedCommand();
+						pCan.pcanLogRecievedRequest(dbObj);
+
 					}
 					pCan.pcanClose();
+					dbObj.cleanDBConnection();
 			case 5:
 				return(0);
 

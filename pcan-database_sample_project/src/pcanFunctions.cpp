@@ -1,4 +1,5 @@
 #include "../include/pcanFunctions.h"
+#include "../include/databaseFunctions.h"
 
 
 void PCanObj::pcanInit()
@@ -71,44 +72,41 @@ int PCanObj::pcanRxN(int num_msgs){
 	return ((int)Rxmsg.DATA[0]);						// Return the last value received
 }
 
-void PCanObj::pcanExecuteRecievedCommand(){
-	// Read 'num' messages on the CAN bus
-	while((status = CAN_Read(h, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
-		usleep(10);
-	}
+void PCanObj::pcanLogRecievedRequest(DBObj& dbObj){
+	status = CAN_Read(h, &Rxmsg);
 	if(status != PCAN_NO_ERROR) {						// If there is an error, display the code
 		printf("Error 0x%x\n", (int)status);
 		//break;
 	}
-
-	if(Rxmsg.ID != 0x01 && Rxmsg.LEN != 0x04 ) {		// Ignore status message on bus
+	else if(status != PCAN_RECEIVE_QUEUE_EMPTY)
+	{
 		printf("  - R ID:%4x LEN:%1x DATA:%02x \n",	// Display the CAN message
 			(int)Rxmsg.ID,
 			(int)Rxmsg.LEN,
 			(int)Rxmsg.DATA[0]);
-		if(Rxmsg.ID == ID_CC_TO_SC)
+
+		if(Rxmsg.ID == ID_EC_TO_ALL)
 		{
-			if(Rxmsg.DATA[0] == 0x01){
-				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR1);
-			}
-			else if (Rxmsg.DATA[0] == 0x02) {
-				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR2);
-			}
-			else if (Rxmsg.DATA[0] == 0x03) {
-				this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR3);
-			}
+			currentFloor = (int)Rxmsg.DATA[0] - 4;
 		}
-		else if(Rxmsg.ID == ID_F1_TO_SC)
+		else if(Rxmsg.ID != 0x01 && Rxmsg.LEN != 0x04) // Ignore status message on bus
 		{
-			this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR1);
-		}
-		else if(Rxmsg.ID == ID_F2_TO_SC)
-		{
-			this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR2);
-		}
-		else if(Rxmsg.ID == ID_F3_TO_SC)
-		{
-			this->pcanTx(ID_SC_TO_EC, GO_TO_FLOOR3);
+			if(Rxmsg.ID == ID_CC_TO_SC)
+			{
+				dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, (int)Rxmsg.DATA[0]);
+			}
+			else if(Rxmsg.ID == ID_F1_TO_SC)
+			{
+				dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 1);
+			}
+			else if(Rxmsg.ID == ID_F2_TO_SC)
+			{
+				dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 2);
+			}
+			else if(Rxmsg.ID == ID_F3_TO_SC)
+			{
+				dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, 3);
+			}
 		}
 	}
 }
