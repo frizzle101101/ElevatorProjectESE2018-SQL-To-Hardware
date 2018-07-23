@@ -61,7 +61,7 @@ int DBObj::getQuedReqFloor() {
 
 	pstmt = con->prepareStatement("SELECT currentFloor FROM elv_req_log WHERE reqId = ?");	// message query
 	pstmt->setInt(1, requestID);
-	res = stmt->executeQuery();
+	pstmt->executeQuery();
 	int floorNum = res->getInt("currentFloor");
 
 	pstmt = con->prepareStatement("DELETE FROM elv_req_que WHERE reqId = ?");
