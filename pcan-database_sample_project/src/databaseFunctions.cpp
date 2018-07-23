@@ -36,7 +36,7 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 	pstmt->executeUpdate();
 
 	stmt = con->createStatement();
-	res = stmt->executeQuery("SELECT * FROM elv_req_log ORDER BY reqId DESC LIMIT 1");	// message query
+	res = stmt->executeQuery("SELECT reqId FROM elv_req_log ORDER BY reqId DESC LIMIT 1");	// message query
 	int requestID;
 	while(res->next()){
 		requestID = res->getInt("reqId");
@@ -59,7 +59,7 @@ int DBObj::getQuedReqFloor() {
 	// Query database
 	// *****************************
 	stmt = con->createStatement();
-	res = stmt->executeQuery("SELECT * FROM elv_req_que ORDER BY reqId ASC LIMIT 1");	// message query
+	res = stmt->executeQuery("SELECT reqId FROM elv_req_que ORDER BY reqId ASC LIMIT 1");	// message query
 	int requestID;
 	while(res->next()){
 		requestID = res->getInt("reqId");
