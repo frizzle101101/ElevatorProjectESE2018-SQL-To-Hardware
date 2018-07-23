@@ -72,7 +72,7 @@ int PCanObj::pcanRxN(int num_msgs){
 
 void PCanObj::pcanLogRecievedRequest(DBObj& dbObj){
 	while((status = CAN_Read(h2, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
-		usleep(1);
+		usleep(10);
 	}
 	if(status != PCAN_NO_ERROR) {						// If there is an error, display the code
 		printf("Error 0x%x\n", (int)status);
