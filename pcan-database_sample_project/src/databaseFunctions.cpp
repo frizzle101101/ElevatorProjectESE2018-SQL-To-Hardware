@@ -81,7 +81,7 @@ int DBObj::getQuedReqFloor() {
 
 	pstmt = con->prepareStatement("DELETE FROM elv_req_que WHERE reqId = ?");
 	pstmt->setInt(1, requestID);
-	pstmt->executeUpdate();
+	//pstmt->executeUpdate();
 
 	// Clean up pointers
 	delete res;
