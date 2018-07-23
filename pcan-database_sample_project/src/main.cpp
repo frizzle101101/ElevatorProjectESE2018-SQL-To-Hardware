@@ -56,7 +56,6 @@ int main() {
 							startTime = time(NULL);
 							moving = 1;
 						}
-						prev_floorNumber = floorNumber;
 
 
 						//checcking for can rx
