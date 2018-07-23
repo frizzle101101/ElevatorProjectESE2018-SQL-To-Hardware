@@ -71,17 +71,17 @@ int DBObj::getQuedReqFloor() {
 		requestID = res->getInt("reqId");
 	}
 
-	pstmt = con->prepareStatement("SELECT currentFloor FROM elv_req_log WHERE reqId = ?");	// message query
+	pstmt = con->prepareStatement("SELECT requestedFloor FROM elv_req_log WHERE reqId = ?");	// message query
 	pstmt->setInt(1, requestID);
 	res = pstmt->executeQuery();
 	int floorNum;
 	while(res->next()){
-		floorNum = res->getInt("currentFloor");
+		floorNum = res->getInt("requestedFloor");
 	}
 
 	pstmt = con->prepareStatement("DELETE FROM elv_req_que WHERE reqId = ?");
 	pstmt->setInt(1, requestID);
-	//pstmt->executeUpdate();
+	pstmt->executeUpdate();
 
 	// Clean up pointers
 	delete res;
