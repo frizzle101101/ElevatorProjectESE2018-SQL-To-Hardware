@@ -46,7 +46,7 @@ int PCanObj::pcanRxN(int num_msgs){
 
 	// Read 'num' messages on the CAN bus
 	while(i < num_msgs) {
-		while((status = CAN_Read(h2, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
+		while((status = CAN_Read(h, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
 			sleep(1);
 		}
 		if(status != PCAN_NO_ERROR) {						// If there is an error, display the code
