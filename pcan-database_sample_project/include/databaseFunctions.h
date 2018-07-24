@@ -22,5 +22,8 @@ public:
 private:
   sql::Driver *driver; 			// Create a pointer to a MySQL driver object
 	sql::Connection *con; 			// Create a pointer to a database connection object
+  sql::Statement *stmt;				// Crealte a pointer to a Statement object to hold statements
+	sql::ResultSet *res;				// Create a pointer to a ResultSet object to hold results
+	sql::PreparedStatement *pstmt; 		// Create a pointer to a prepared statement
 };
 #endif
