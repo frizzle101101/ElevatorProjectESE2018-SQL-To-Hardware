@@ -93,6 +93,20 @@ int DBObj::getQuedReqFloor(int prev_floorNumber) {
 
 	return floorNum;
 }
+void DBObj::updateCurrentFloor(int currentFloor) {
+	sql::Statement *stmt;				// Crealte a pointer to a Statement object to hold statements
+	sql::ResultSet *res;				// Create a pointer to a ResultSet object to hold results
+	sql::PreparedStatement *pstmt; 		// Create a pointer to a prepared statement
+
+	pstmt = con->prepareStatement("UPDATE elevator SET currentFloor = ?");
+	pstmt->setInt(1, currentFloor);
+	pstmt->executeUpdate();
+
+	// Clean up pointers
+	delete res;
+	delete pstmt;
+	delete stmt;
+}
 void DBObj::cleanDBConnection() {
 	// Clean up pointers
 	delete con;
