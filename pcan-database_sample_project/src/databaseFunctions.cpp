@@ -49,6 +49,7 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 	pstmt->setInt(1, requestID);
 	pstmt->executeUpdate();
 
+	cleanDBPointers();
 }
 int DBObj::getQuedReqFloor(int prev_floorNumber) {
 
@@ -76,7 +77,7 @@ int DBObj::getQuedReqFloor(int prev_floorNumber) {
 	pstmt->setInt(1, requestID);
 	pstmt->executeUpdate();
 
-
+	cleanDBPointers();
 
 	return floorNum;
 }
@@ -86,12 +87,15 @@ void DBObj::updateCurrentFloor(int currentFloor) {
 	pstmt->setInt(1, currentFloor);
 	pstmt->executeUpdate();
 
+	cleanDBPointers();
 }
 void DBObj::cleanDBConnection() {
 	// Clean up pointers
-	// Clean up pointers
-	delete res;
-	delete pstmt;
-	delete stmt;
 	delete con;
+}
+void DBObj::cleanDBPointers() {
+// Clean up pointers
+delete res;
+delete pstmt;
+delete stmt;
 }
