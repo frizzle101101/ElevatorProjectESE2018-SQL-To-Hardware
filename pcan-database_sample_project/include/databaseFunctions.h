@@ -16,6 +16,7 @@ public:
   void initDBConnection();
   void logFloorReq(int nodeID, int status, int currentFloor, int requestedFloor);
   int getQuedReqFloor(int prev_floorNumber);
+  void updateCurrentFloor(int currentFloor)
   void cleanDBConnection();
 
 private:
