@@ -4,31 +4,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdlib.h>
-#include <unistd.h> 
+#include <unistd.h>
 
 
 int menu(){
-	
+
 	int usrchoice = 0;
 	system("@cls||clear");
 	while(1) {
 		printf("\n\nMenu - Transmit/Receive CAN Messages\n");
-		printf("1. Transmit CAN message using this program\n");
-		printf("2. Receive CAN message(s) using this program\n");
-		printf("3. Control elevator from website\n");
-		printf("4. Exit program\n");
+		printf("4. SC mode\n");
+		printf("5. Exit program\n");
 		printf("\nYour choice: ");
 		scanf("%d", &usrchoice);
 
-		if (usrchoice >=1 && usrchoice <= 4) {	
+		if (usrchoice >=1 && usrchoice <= 5) {
 			return usrchoice;
 		} else {
-			printf("\nPLEASE SELECT FROM CHOICES 1-4 ONLY!\n\n");
+			printf("\nPLEASE SELECT FROM CHOICES 1-5 ONLY!\n\n");
 			sleep(3);
 			system("@cls||clear");
 		}
 	}
-	
+
 }
 
 
@@ -49,25 +47,25 @@ int chooseID(){
 		printf("\nYour choice: ");
 		scanf("%d", &IdChoice);
 
-		if (IdChoice >=1 && IdChoice <= 6) {	
+		if (IdChoice >=1 && IdChoice <= 6) {
 			switch(IdChoice) {
 				case 1:
-					IDvalue = ID_SC_TO_EC; 
+					IDvalue = ID_SC_TO_EC;
 					return(IDvalue);
 				case 2:
-					IDvalue = ID_EC_TO_ALL; 
+					IDvalue = ID_EC_TO_ALL;
 					return(IDvalue);
 				case 3:
-					IDvalue = ID_CC_TO_SC; 
+					IDvalue = ID_CC_TO_SC;
 					return(IDvalue);
 				case 4:
-					IDvalue = ID_F1_TO_SC; 
+					IDvalue = ID_F1_TO_SC;
 					return(IDvalue);
 				case 5:
-					IDvalue = ID_F2_TO_SC; 
+					IDvalue = ID_F2_TO_SC;
 					return(IDvalue);
 				case 6:
-					IDvalue = ID_F3_TO_SC; 
+					IDvalue = ID_F3_TO_SC;
 					return(IDvalue);
 			}
 
@@ -80,9 +78,9 @@ int chooseID(){
 }
 
 int chooseMsg(){
-	int messageChoice = 0; 
+	int messageChoice = 0;
 	int messageValue = 0;
-	
+
 	while(1) {
 		system("@cls||clear");
 		printf("\nChoose Message\n");
@@ -92,18 +90,18 @@ int chooseMsg(){
 		printf("\nYour choice: ");
 		scanf("%d", &messageChoice);
 
-		if (messageChoice >=1 && messageChoice <= 3) {	
+		if (messageChoice >=1 && messageChoice <= 3) {
 			switch(messageChoice) {
 				case 1:
-					messageValue = GO_TO_FLOOR1; 
+					messageValue = GO_TO_FLOOR1;
 					return(messageValue);
 					break;
 				case 2:
-					messageValue = GO_TO_FLOOR2; 
+					messageValue = GO_TO_FLOOR2;
 					return(messageValue);
 					break;
 				case 3:
-					messageValue = GO_TO_FLOOR3; 
+					messageValue = GO_TO_FLOOR3;
 					return(messageValue);
 					break;
 			}
@@ -125,7 +123,7 @@ int HexFromFloor(int floorVal) {
 		case 2:
 			return(GO_TO_FLOOR2);
 			break;
-		case 3: 
+		case 3:
 			return(GO_TO_FLOOR3);
 			break;
 		default:
@@ -134,7 +132,7 @@ int HexFromFloor(int floorVal) {
 }
 
 int FloorFromHex(int Hex){
-		
+
 	switch(Hex) {
 		case GO_TO_FLOOR1:
 			return(1);
