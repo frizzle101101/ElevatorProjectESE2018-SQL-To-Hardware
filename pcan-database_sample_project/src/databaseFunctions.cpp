@@ -19,14 +19,14 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 	stmt = con->createStatement();
 	res = stmt->executeQuery("SELECT CURRENT_DATE()");	// message query
 	string currentDate;
-	while(res->next()){
+	if(res->next()){
 		currentDate = res->getString("CURRENT_DATE()");
 	}
 
 	stmt = con->createStatement();
 	res = stmt->executeQuery("SELECT CURRENT_TIME()");	// message query
 	string currentTime ;
-	while(res->next()){
+	if(res->next()){
 		currentTime = res->getString("CURRENT_TIME()");
 	}
 
@@ -44,7 +44,7 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 	stmt = con->createStatement();
 	res = stmt->executeQuery("SELECT reqId FROM elv_req_log ORDER BY reqId DESC LIMIT 1");	// message query
 	int requestID;
-	while(res->next()){
+	if(res->next()){
 		requestID = res->getInt("reqId");
 	}
 
@@ -57,7 +57,7 @@ void DBObj::logFloorReq(int nodeID, int status, int currentFloor, int requestedF
 	delete pstmt;
 	delete stmt;
 }
-int DBObj::getQuedReqFloor() {
+int DBObj::getQuedReqFloor(int prev_floorNumber) {
 	sql::Statement *stmt;				// Crealte a pointer to a Statement object to hold statements
 	sql::ResultSet *res;				// Create a pointer to a ResultSet object to hold results
 	sql::PreparedStatement *pstmt; 		// Create a pointer to a prepared statement
@@ -67,7 +67,7 @@ int DBObj::getQuedReqFloor() {
 	stmt = con->createStatement();
 	res = stmt->executeQuery("SELECT reqId FROM elv_req_que ORDER BY reqId ASC LIMIT 1");	// message query
 	int requestID;
-	while(res->next()){
+	if(res->next()){
 		requestID = res->getInt("reqId");
 	}
 
@@ -75,8 +75,11 @@ int DBObj::getQuedReqFloor() {
 	pstmt->setInt(1, requestID);
 	res = pstmt->executeQuery();
 	int floorNum;
-	while(res->next()){
+	if(res->next()){
 		floorNum = res->getInt("requestedFloor");
+	}
+	else{
+		floorNum = prev_floorNumber;
 	}
 
 	pstmt = con->prepareStatement("DELETE FROM elv_req_que WHERE reqId = ?");

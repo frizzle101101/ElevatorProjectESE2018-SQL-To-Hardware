@@ -46,7 +46,7 @@ int main() {
 						if(moving == 0)
 						{
 							//deque if not moving still
-							floorNumber = dbObj.getQuedReqFloor();
+							floorNumber = dbObj.getQuedReqFloor(prev_floorNumber);
 						}
 						// If floor number changes in database
 						if (prev_floorNumber != floorNumber) {
