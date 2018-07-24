@@ -98,9 +98,8 @@ void DBObj::updateCurrentFloor(int currentFloor) {
 	sql::ResultSet *res;				// Create a pointer to a ResultSet object to hold results
 	sql::PreparedStatement *pstmt; 		// Create a pointer to a prepared statement
 
-	pstmt = con->prepareStatement("UPDATE elevator SET currentFloor = ? WHERE nodeID = ?");
+	pstmt = con->prepareStatement("UPDATE elevator SET currentFloor = ? WHERE nodeID = 512");
 	pstmt->setInt(1, currentFloor);
-	pstmt->setInt(2, 0x200);//car id
 	pstmt->executeUpdate();
 
 	// Clean up pointers

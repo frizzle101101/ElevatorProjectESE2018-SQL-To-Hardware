@@ -43,7 +43,7 @@ void PCanObj::pcanLogRecievedRequest(DBObj& dbObj){
 	if(Rxmsg.ID == ID_EC_TO_ALL)
 	{
 		currentFloor = (int)Rxmsg.DATA[0] - 4;
-		//dbObj.updateCurrentFloor(currentFloor);
+		dbObj.updateCurrentFloor(currentFloor);
 	}
 	else if(Rxmsg.ID != 0x01 && Rxmsg.LEN != 0x04) // Ignore status message on bus
 	{
