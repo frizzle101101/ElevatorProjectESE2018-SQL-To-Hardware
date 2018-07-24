@@ -71,24 +71,22 @@ int PCanObj::pcanRxN(int num_msgs){
 }
 
 void PCanObj::pcanLogRecievedRequest(DBObj& dbObj){
-	while((status = CAN_Read(h, &Rxmsg)) == PCAN_RECEIVE_QUEUE_EMPTY){
-		usleep(10);
-	}
+	status = CAN_Read(h, &Rxmsg);
 	if(status != PCAN_NO_ERROR) {						// If there is an error, display the code
 		printf("Error 0x%x\n", (int)status);
 		//break;
 	}
 
+	printf("  - R ID:%4x LEN:%1x DATA:%02x \n",	// Display the CAN message
+		(int)Rxmsg.ID,
+		(int)Rxmsg.LEN,
+		(int)Rxmsg.DATA[0]);
 	if(Rxmsg.ID == ID_EC_TO_ALL)
 	{
 		currentFloor = (int)Rxmsg.DATA[0] - 4;
 	}
 	else if(Rxmsg.ID != 0x01 && Rxmsg.LEN != 0x04) // Ignore status message on bus
 	{
-		printf("  - R ID:%4x LEN:%1x DATA:%02x \n",	// Display the CAN message
-			(int)Rxmsg.ID,
-			(int)Rxmsg.LEN,
-			(int)Rxmsg.DATA[0]);
 		if(Rxmsg.ID == ID_CC_TO_SC)
 		{
 			dbObj.logFloorReq((int)Rxmsg.ID, status, currentFloor, (int)Rxmsg.DATA[0]);
