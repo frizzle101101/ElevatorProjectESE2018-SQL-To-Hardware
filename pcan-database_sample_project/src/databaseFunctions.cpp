@@ -87,7 +87,7 @@ void DBObj::updateCurrentFloor(int currentFloor) {
 	pstmt->setInt(1, currentFloor);
 	pstmt->executeUpdate();
 
-	cleanDBPointers();
+	delete pstmt;
 }
 void DBObj::cleanDBConnection() {
 	// Clean up pointers
