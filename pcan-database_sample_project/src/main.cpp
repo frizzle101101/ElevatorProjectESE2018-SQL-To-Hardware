@@ -32,9 +32,10 @@ int main() {
 			case 4:
 			printf("\nNow listening to commands from the website, and reciving from pcan as SC - press ctrl-z to cancel\n");
 					pCan.pcanInit();
-					dbObj.initDBConnection();
+
 					startTime = time(NULL);
 					while(1){
+						dbObj.initDBConnection();
 						currentTime = time(NULL);
 
 						if(currentTime - startTime >= 10)
@@ -60,10 +61,10 @@ int main() {
 
 						//checcking for can rx
 						pCan.pcanLogRecievedRequest(dbObj);
-
+						dbObj.cleanDBConnection();
 					}
 					pCan.pcanClose();
-					dbObj.cleanDBConnection();
+
 			case 5:
 				return(0);
 
