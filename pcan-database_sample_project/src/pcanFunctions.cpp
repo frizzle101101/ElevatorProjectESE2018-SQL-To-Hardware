@@ -22,7 +22,11 @@ int PCanObj::pcanTx(int id, int data){
 	Txmsg.LEN = 1;
 	Txmsg.DATA[0] = data;
 
-	sleep(1);
+	printf("  - T ID:%4x LEN:%1x DATA:%02x \n",	// Display the CAN message
+		(int)Rxmsg.ID,
+		(int)Rxmsg.LEN,
+		(int)Rxmsg.DATA[0]);
+
 	status = CAN_Write(h, &Txmsg);
 }
 
