@@ -41,13 +41,11 @@ public:
   void pcanInit();
   void pcanClose();
 	int pcanTx(int id, int data);
-	int pcanRxN(int num_msgs);//old test functions
 	void pcanLogRecievedRequest(DBObj& dbObj);
 
 
 private:
 	HANDLE h;
-	HANDLE h2;
 
 	TPCANMsg Txmsg;
 	DWORD status;
